@@ -1,7 +1,17 @@
 # EviveTakeHomeAssessment
 
-Take-home exercise for Evive.  
+Take-home assessment for my application to Evive.  
 
-Created an main Order class that takes in which meal to order for (Breakfast, Lunch or Dinner) and a comma separated list of items to order.
+Console application runnning on ASP.NET Core.
 
-I still need to create tests and a build script for this assessment.  For now, it can be run by cloning the repository and running dotnet run --proj BuildScripts from a terminal.
+This is a Menu Ordering application that takes orders for Breakfast, Lunch, and Dinner.  
+
+To run the application locally, fork this project and run the following command in a command prompt/terminal:
+  
+    dotnet run --proj BuildScripts
+  
+The application will display a series of prompts to allow you to place new orders.
+  
+Run unit tests by entering the following command in a command prompt/terminal:
+    
+    dotnet test Tests/Tests.csproj
