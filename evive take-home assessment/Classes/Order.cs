@@ -8,25 +8,23 @@ public enum Meal {
 
 public class Order
 {
-    private string _output = "";
+    public string Output { get; private set; }
     public Meal Meal { get; private set; }
-    public int[] Items { get; private set;}
+    public string[] Items { get; private set;}
 
-    public Order(Meal meal, params int[] items) {
+    public Order(Meal meal, params string[] items) {
         this.Meal = meal;
         this.Items = items;
         try
         {
             ProcessOrder();
-            Console.WriteLine(_output);
+            Console.WriteLine($"Here's what you ordered: {Output}");
         }
-        catch (System.ArgumentOutOfRangeException e)
+        catch (System.Exception e)
         {
-            Console.WriteLine($"Unable to process order: {e.Message} {e.ParamName}");
-        }
-        catch (System.InvalidOperationException e)
-        {
-            Console.WriteLine($"Unable to process order: {e.Message}");
+            Output = e.Message;
+            Console.WriteLine($"Unable to place order: {Output}");
+            throw;
         }
     }
 
@@ -34,13 +32,13 @@ public class Order
         switch(Meal)
         {
             case Meal.Breakfast:
-                _output = Breakfast.ProcessItems(Items);
+                Output = Breakfast.ProcessItems(Items);
                 break;
             case Meal.Lunch:
-                _output = Lunch.ProcessItems(Items);
+                Output = Lunch.ProcessItems(Items);
                 break;
             case Meal.Dinner:
-                _output = Dinner.ProcessItems(Items);
+                Output = Dinner.ProcessItems(Items);
                 break;
         }
     }

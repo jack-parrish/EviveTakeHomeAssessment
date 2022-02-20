@@ -2,23 +2,22 @@
 
 public static class Lunch
 {
-    public static Dictionary<int, MenuItem> Menu 
+    public static Dictionary<string, MenuItem> Menu 
     { 
         get {
-            return new Dictionary<int, MenuItem>() {
-                { 1, new MenuItem("Sandwich", ItemCategory.Main) },
-                { 2, new MenuItem("Chips", ItemCategory.Side) },
-                { 3, new MenuItem("Soda", ItemCategory.Drink) }
+            return new Dictionary<string, MenuItem>() {
+                { "1", new MenuItem("Sandwich", ItemCategory.Main) },
+                { "2", new MenuItem("Chips", ItemCategory.Side) },
+                { "3", new MenuItem("Soda", ItemCategory.Drink) }
             };
         } 
     }
-    public static string ProcessItems(int[] items) {
+    public static string ProcessItems(string[] items) {
         Dictionary<ItemCategory, string> placedOrder = new Dictionary<ItemCategory, string>();
         int sidesCount = 1;
-
+        MenuItem item = Menu["1"];
         for (int i = 0; i < items.Length; i++)
         {
-            MenuItem item = Menu[1];
             try
             {
                 if (Menu.ContainsKey(items[i])) {
@@ -29,22 +28,25 @@ public static class Lunch
                     throw new System.ArgumentOutOfRangeException(items[i].ToString(), "Item not found in the menu - ");
                 }
             }
-            catch (System.ArgumentException)
+            catch (System.ArgumentException e)
             {
-                if (item.ItemCat == ItemCategory.Side) {
+                if (e is ArgumentOutOfRangeException) {
+                    throw;
+                }
+                else if (item.ItemCat == ItemCategory.Side) {
                     sidesCount++;
                 }
                 else {
-                    throw new InvalidOperationException($"{item.Name} cannot be ordered more than once");
+                    throw new ArgumentException($"{item.Name} cannot be ordered more than once");
                 }
             }
         }
 
         if (!placedOrder.ContainsKey(ItemCategory.Main)) {
-            throw new System.InvalidOperationException("Main dish is missing");
+            throw new System.ArgumentException("Main dish is missing");
         }
         if (!placedOrder.ContainsKey(ItemCategory.Side)) {
-            throw new System.InvalidOperationException("Side is missing");
+            throw new System.ArgumentException("Side is missing");
         }
         if (!placedOrder.ContainsKey(ItemCategory.Drink)) {
             placedOrder.Add(ItemCategory.Drink, "Water");
